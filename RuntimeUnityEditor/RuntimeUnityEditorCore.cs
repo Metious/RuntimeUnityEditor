@@ -36,6 +36,19 @@ namespace RuntimeUnityEditor.Core
             }
         }
 
+        public bool FreezeOnShow
+        {
+            get => _freezeOnShow;
+            set
+            {
+                if (_freezeOnShow != value)
+                {
+                    _freezeOnShow = value;
+                    SettingsChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
         public bool ShowRepl
         {
             get => Repl != null && Repl.Show;
@@ -91,6 +104,7 @@ namespace RuntimeUnityEditor.Core
         private bool _previousCursorVisible;
 
         private KeyCode _showHotkey = KeyCode.F12;
+        private bool _freezeOnShow;
 
         internal RuntimeUnityEditorCore(MonoBehaviour pluginObject, ILoggerWrapper logger, string configPath)
         {
@@ -252,6 +266,11 @@ namespace RuntimeUnityEditor.Core
                 TreeViewer.Update();
 
                 MouseInspect.Update();
+
+                if (FreezeOnShow)
+                {
+                    Time.timeScale = 0f;
+                }
             }
         }
 

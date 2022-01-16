@@ -14,6 +14,7 @@ namespace RuntimeUnityEditor.Bepin5
         public ConfigEntry<string> DnSpyArgs { get; private set; }
         public ConfigEntry<bool> ShowRepl { get; private set; }
         public ConfigEntry<bool> EnableMouseInspector { get; private set; }
+        public ConfigEntry<bool> EnableFreeze { get; private set; }
         public ConfigEntry<KeyboardShortcut> Hotkey { get; private set; }
 
         public static RuntimeUnityEditorCore Instance { get; private set; }
@@ -45,6 +46,10 @@ namespace RuntimeUnityEditor.Bepin5
             EnableMouseInspector = Config.Bind("General", "Enable Mouse Inspector", true);
             EnableMouseInspector.SettingChanged += (sender, args) => Instance.EnableMouseInspect = EnableMouseInspector.Value;
             Instance.EnableMouseInspect = EnableMouseInspector.Value;
+
+            EnableFreeze = Config.Bind("General", "Freezes the game everytime you open runtime editor", false);
+            EnableFreeze.SettingChanged += (sender, args) => Instance.FreezeOnShow = EnableFreeze.Value;
+            Instance.FreezeOnShow = EnableFreeze.Value;
 
             Hotkey = Config.Bind("General", "Open/close runtime editor", new KeyboardShortcut(KeyCode.F12));
             Hotkey.SettingChanged += (sender, args) => Instance.ShowHotkey = Hotkey.Value.MainKey;
